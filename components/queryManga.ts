@@ -12,12 +12,13 @@ export async function queryManga(baseUrl: string, title: string, setData: any) {
   });
 
   const data = resp.data.data;
-  console.log(data);
+
   const result = data.map((item: any, idx: any) => {
-    const { relationships } = item;
+    const { relationships, attributes } = item;
     const coverArt = relationships.find((obj: any) => obj.type === "cover_art");
     const { id } = item;
-    return { id, coverArt };
+    const { title } = attributes;
+    return { id, coverArt, title };
   });
 
   setData(result);

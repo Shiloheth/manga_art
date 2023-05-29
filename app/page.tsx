@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { queryManga } from "@/components/queryManga";
 import { AiFillGithub } from "react-icons/ai";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -11,7 +11,11 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchBarActive, setSearchBarActive] = useState(false);
   const baseUrl = "https://api.mangadex.org";
+  const overlay = useRef<any>();
+
+  console.log(data);
 
   const handleChange = (e: any) => {
     const value = e.target.value;
@@ -19,6 +23,16 @@ export default function App() {
     setSearchQuery(value);
     setIsLoading(true);
   };
+
+  function handleActive() {
+    setSearchBarActive(!searchBarActive);
+  }
+  function handleRef(e: any) {
+    console.log(e);
+    if (e.target === overlay.current) {
+      setSearchBarActive(!searchBarActive);
+    }
+  }
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
@@ -34,31 +48,36 @@ export default function App() {
   const result =
     data &&
     data.map((item: any, idx: any) => (
-      <div key={idx}>
+      <div key={idx} className="flex items-center">
         <Image
           alt=""
           src={`https://uploads.mangadex.org/covers/${item.id}/${item.coverArt.attributes.fileName}`}
-          width={70}
-          height={70}
+          width={50}
+          height={50}
         />
+        <div className="text-black font-semibold">{item.title.en}</div>
       </div>
     ));
 
   return (
-    <>
-      <header className="flex items-center flex-1">
-        <h1 className="flex flex-1">Manga Art</h1>
-        <div className="flex items-center ">
-          <div className="flex items-center text-lg bg-[] relative mr-64">
-            <AiOutlineSearch className="absolute" />
-            <input
-              className="bg-[#000000] pl-5 b-0"
+    <div className="relative h-screen">
+      <header className=" flex items-center mx-2 pt-4 border-b border-[#e5e4e5] pb-2">
+        <h1 className="text-xl inline-block shrink-0 font-semibold">
+          MangaArt
+        </h1>
+        <div className="flex items-center justify-end grow ">
+          <div className="flex items-center text-lg bg-[] relative ">
+            <AiOutlineSearch className="mx-4 text-2xl" onClick={handleActive} />
+            {/* <input
+              className="bg-[#000000] pl-5 b-0 font-light"
               onChange={handleChange}
               value={searchQuery}
               placeholder="Search..."
-            />
+              onClick={handleActive}
+            /> */}
+            <AiFillGithub className="text-2xl" />
           </div>
-          <div className="absolute top-[40px] bg-[#ffffff]">
+          {/* <div className="absolute top-[40px] bg-[#ffffff]">
             {searchQuery.length ? (
               isLoading ? (
                 <Loader />
@@ -68,13 +87,22 @@ export default function App() {
                 result
               )
             ) : null}
-          </div>
-          <AiFillGithub className="text-4xl" />
+          </div> */}
         </div>
       </header>
-      <button onClick={() => setData([])}>query</button>
 
-      <div className="grid grid-cols-3"></div>
-    </>
+      {searchBarActive && (
+        <div
+          className="absolute w-full h-full px-5 top-0 pt-4 backdrop-sepia	bg-[#0003]"
+          onClick={handleRef}
+          ref={overlay}
+        >
+          <div className="bg-[#FF0000] h-full w-full ">
+            {" "}
+            <div className="blur-2xl h-full w-full"></div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
