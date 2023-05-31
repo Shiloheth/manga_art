@@ -23,3 +23,12 @@ export async function queryManga(baseUrl: string, title: string, setData: any) {
 
   setData(result);
 }
+
+export async function getChapters(baseUrl: any, mangaID: any, setChapter: any) {
+  const resp = await axios({
+    method: "GET",
+    url: `${baseUrl}/manga/${mangaID}/feed`,
+  });
+  console.log(resp.data.data[0].id);
+  setChapter(resp.data.data[0].id);
+}
