@@ -7,9 +7,9 @@ import Searchbar from "@/components/searchbar";
 import Image from "next/image";
 import Loader from "@/components/Loader";
 import Images from "@/components/Images";
+import Scramble from "@/components/canvas";
 
 export default function App() {
-  const [chapter, setChapter] = useState("");
   const [images, setImages] = useState([]);
   const [chapterImages, setChapterImages] = useState("");
 
@@ -39,6 +39,7 @@ export default function App() {
         ></div>
       )} */}
       <Searchbar />
+      {/* <Scramble /> */}
     </div>
   );
 }

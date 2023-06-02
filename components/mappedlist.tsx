@@ -2,10 +2,20 @@ import Image from "next/image";
 import { getChapters } from "./queryManga";
 import { useState } from "react";
 
-export default function Mappedlist({ searchData }: { searchData: any }) {
+export default function Mappedlist({
+  searchData,
+  setSearchBarActive,
+  setSearchQuery,
+}: {
+  searchData: any;
+  setSearchBarActive: any;
+  setSearchQuery: any;
+}) {
   const [loadingStates, setLoadingStates] = useState(
     Array(searchData.length).fill(true)
   );
+
+  const [chapter, setChapter] = useState("");
 
   const handleImageLoad = (idx: any) => {
     const nextList = [...loadingStates];
@@ -13,6 +23,7 @@ export default function Mappedlist({ searchData }: { searchData: any }) {
     setLoadingStates(nextList);
     console.log(nextList);
   };
+  const baseUrl = "https://api.mangadex.org";
 
   const mappedList =
     searchData &&
@@ -22,9 +33,9 @@ export default function Mappedlist({ searchData }: { searchData: any }) {
           key={idx}
           className="flex items-center"
           onClick={() => {
-            // getChapters(baseUrl, item.id, setChapter);
-            // setSearchQuery("");
-            // setSearchBarActive(false);
+            getChapters(baseUrl, item.id, setChapter);
+            setSearchQuery("");
+            setSearchBarActive(false);
           }}
         >
           <div className="relative h-[45px] w-[45px]">

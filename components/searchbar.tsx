@@ -12,6 +12,9 @@ export default function Searchbar() {
   const [searchBarActive, setSearchBarActive] = useState(false);
   const baseUrl = "https://api.mangadex.org";
 
+  // setSearchQuery("");
+  // setSearchBarActive(false);
+
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       setIsLoading(false);
@@ -56,7 +59,11 @@ export default function Searchbar() {
                 ) : searchData.length === 0 ? (
                   <div className="text-black bg-">no search results</div>
                 ) : (
-                  <Mappedlist searchData={searchData} />
+                  <Mappedlist
+                    searchData={searchData}
+                    setSearchQuery={setSearchQuery}
+                    setSearchBarActive={setSearchBarActive}
+                  />
                 )
               ) : null}
             </div>
