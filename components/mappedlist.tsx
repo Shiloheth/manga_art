@@ -1,29 +1,45 @@
 import Image from "next/image";
-import { getChapters } from "./queryManga";
+import axios from "axios";
+
 import { useState } from "react";
+import Collage from "./collage";
 
 export default function Mappedlist({
   searchData,
   setSearchBarActive,
   setSearchQuery,
+  chapter,
+  setChapter,
 }: {
   searchData: any;
   setSearchBarActive: any;
   setSearchQuery: any;
+  chapter: any;
+  setChapter: any;
 }) {
   const [loadingStates, setLoadingStates] = useState(
     Array(searchData.length).fill(true)
   );
 
-  const [chapter, setChapter] = useState("");
-
   const handleImageLoad = (idx: any) => {
     const nextList = [...loadingStates];
     nextList[idx] = false;
     setLoadingStates(nextList);
-    console.log(nextList);
   };
   const baseUrl = "https://api.mangadex.org";
+
+  console.log(chapter);
+
+  async function getChapters(baseUrl: any, mangaID: any) {
+    const resp = await axios({
+      method: "GET",
+      url: `${baseUrl}/manga/${mangaID}/feed`,
+    });
+    const ran = Array(10).fill(Math.floor(Math.random() * 10));
+    const result = ran.map((_, idx) => resp.data.data[idx].id);
+    console.log(result);
+    setChapter(result);
+  }
 
   const mappedList =
     searchData &&
@@ -33,7 +49,7 @@ export default function Mappedlist({
           key={idx}
           className="flex items-center"
           onClick={() => {
-            getChapters(baseUrl, item.id, setChapter);
+            getChapters(baseUrl, item.id);
             setSearchQuery("");
             setSearchBarActive(false);
           }}

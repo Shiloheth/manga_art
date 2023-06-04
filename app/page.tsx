@@ -1,20 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { queryManga, getChapters } from "@/components/queryManga";
+import { queryManga } from "@/components/queryManga";
 import { AiFillGithub } from "react-icons/ai";
 import Searchbar from "@/components/searchbar";
-import Image from "next/image";
-import Loader from "@/components/Loader";
-import Images from "@/components/Images";
-import Scramble from "@/components/canvas";
+import Collage from "@/components/collage";
 
 export default function App() {
-  const [images, setImages] = useState([]);
-  const [chapterImages, setChapterImages] = useState("");
-
-  const overlay = useRef<any>();
-
+  const [chapter, setChapter] = useState<any>([]);
+  const baseUrl = "https://api.mangadex.org";
   // function handleRef(e: any) {
   //   if (e.target === overlay.current) {
   //     setSearchBarActive(false);
@@ -38,7 +32,8 @@ export default function App() {
           ref={overlay}
         ></div>
       )} */}
-      <Searchbar />
+      <Searchbar chapter={chapter} setChapter={setChapter} />
+      <Collage chapterID={chapter} baseUrl={baseUrl} />
       {/* <Scramble /> */}
     </div>
   );

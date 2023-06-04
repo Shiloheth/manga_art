@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import Header from "./header";
 import Mappedlist from "./mappedlist";
-import { queryManga, getChapters } from "@/components/queryManga";
+import { queryManga } from "@/components/queryManga";
 import Loader from "./Loader";
 import { AiOutlineSearch } from "react-icons/ai";
 
-export default function Searchbar() {
+export default function Searchbar({
+  chapter,
+  setChapter,
+}: {
+  chapter: any;
+  setChapter: any;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchData, setSearchData] = useState<any>([]);
@@ -63,6 +69,8 @@ export default function Searchbar() {
                     searchData={searchData}
                     setSearchQuery={setSearchQuery}
                     setSearchBarActive={setSearchBarActive}
+                    chapter={chapter}
+                    setChapter={setChapter}
                   />
                 )
               ) : null}

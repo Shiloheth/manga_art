@@ -5,7 +5,6 @@ import { AiOutlineSearch } from "react-icons/ai";
 export default function Header({ active }: { active: any }) {
   function handleActive() {
     active(true);
-    console.log("huh");
   }
 
   return (
